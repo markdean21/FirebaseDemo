@@ -39,12 +39,14 @@ exports.generateThumbnail = functions.storage.object().onFinalize(async (object)
 
   // Exit if this is triggered on a file that is not an image.
   if (!contentType.startsWith('image/')) {
-    return console.log('This is not an image.');
+     console.log('This is not an image.');
+     return;
   }
 
   // Exit if the image is already a thumbnail.
   if (fileName.startsWith(THUMB_PREFIX)) {
-    return console.log('Already a Thumbnail.');
+    console.log('Already a Thumbnail.');
+    return;
   }
 
 
@@ -90,9 +92,12 @@ exports.generateThumbnail = functions.storage.object().onFinalize(async (object)
   const fileUrl = originalResult[0];
   // Add the URLs to the Database
   await admin.database().ref('images').push({path: fileUrl, thumbnail: thumbFileUrl});
-  return console.log('Thumbnail URLs saved to database.');
+  console.log('Thumbnail URLs saved to database.');
+  return;
 
 }) 
+
+
 
 exports.createUserAccount = functions.auth.user().onCreate(event =>{
     const uid  = event.uid
